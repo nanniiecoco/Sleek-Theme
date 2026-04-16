@@ -1,0 +1,198 @@
+{{ 'customer.css' | asset_url | stylesheet_tag }}
+{{ 'custom.css' | asset_url | stylesheet_tag }}
+
+<div
+  class="customer register section section--padding"
+  style="--section-padding-top: {{ section.settings.padding_top }}px;--section-padding-bottom: {{ section.settings.padding_bottom }}px;"
+>
+  <div class="section__wrapper">
+    <h1 class="text-center">
+      {{ 'customer.register.title' | t }}
+    </h1>
+    {%- form 'create_customer', novalidate: 'novalidate', class: 'flex flex-col register-form' -%}
+      {% comment %} {%- if form.errors -%}
+        <div class="form-error alert alert--error blocks-radius">
+          <h2 class="form-message form-message--error h6 m-0" tabindex="-1" autofocus>
+            {% render 'icon-error', size: 'small' %}
+            {{ 'templates.contact.form.error_heading' | t }}
+          </h2>
+          <ul>
+            {%- for field in form.errors -%}
+              <li>
+                {%- if field == 'form' -%}
+                  {{ form.errors.messages[field] }}
+                {%- else -%}
+                  <a href="#RegisterForm-{{ field }}">
+                    {{ form.errors.translated_fields[field] | capitalize }}
+                    {{ form.errors.messages[field] }}
+                  </a>
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%} {% endcomment %}
+      <div class="form-field field">
+        <label for="RegisterForm-FirstName" class="form-label">
+          {{ 'customer.register.first_name' | t }}
+        </label>
+        <input
+          type="text"
+          name="customer[first_name]"
+          id="RegisterForm-FirstName"
+          {% if form.first_name %}
+            value="{{ form.first_name }}"
+          {% endif %}
+          autocomplete="given-name"
+          placeholder="{{ 'customer.register.first_name' | t }}"
+          class="form-control"
+        >
+      </div>
+      <div class="form-field field">
+        <label for="RegisterForm-LastName" class="form-label">
+          {{ 'customer.register.last_name' | t }}
+        </label>
+        <input
+          type="text"
+          name="customer[last_name]"
+          id="RegisterForm-LastName"
+          {% if form.last_name %}
+            value="{{ form.last_name }}"
+          {% endif %}
+          autocomplete="family-name"
+          placeholder="{{ 'customer.register.last_name' | t }}"
+          class="form-control"
+        >
+      </div>
+      <div class="form-field field">
+        <label for="RegisterForm-email" class="form-label">
+          {{ 'customer.register.email' | t }}
+        </label>
+        <input
+          type="email"
+          name="customer[email]"
+          id="RegisterForm-email"
+          placeholder="{{ 'customer.register.email' | t }}"
+          class="form-control"
+        >
+        {% comment %} {%- if form.errors contains 'email' -%}
+          <span id="RegisterForm-email-error" class="form-message form-message--small form-message--error">
+            {% render 'icon-error', size: 'small' %}
+            {{ form.errors.translated_fields.email | capitalize }}
+            {{ form.errors.messages.email }}.
+          </span>
+        {%- endif -%} {% endcomment %}
+      </div>
+      <div class="form-field field">
+        <label for="RegisterForm-password" class="form-label">
+          {{ 'customer.register.password' | t }}
+        </label>
+        <input
+          type="password"
+          name="customer[password]"
+          id="RegisterForm-password"
+          placeholder="{{ 'customer.register.password' | t }}"
+          class="form-control"
+        >
+        {% comment %} {%- if form.errors contains 'password' -%}
+          <span id="RegisterForm-password-error" class="form-message form-message--small form-message--error">
+            {% render 'icon-error', size: 'small' %}
+            {{ form.errors.translated_fields.password | capitalize }}
+            {{ form.errors.messages.password }}.
+          </span>
+        {%- endif -%} {% endcomment %}
+      </div>
+      <div class="form-group fields fields--phone">
+        <div class="form-field field field--isd-code">
+          <label for="isd_code">{{ 'customer.login_page.isd_code' | t }}</label>
+          <select name="customer[note][isd_code]" class="form-control" id="isd_code-select">
+            <option value="66" selected>🇹🇭 +66</option>
+            <option value="1">🇺🇸 +1</option>
+            <option value="44">🇬🇧 +44</option>
+            <option value="84">🇻🇳 +84</option>
+            <option value="81">🇯🇵 +81</option>
+            <option value="86">🇨🇳 +86</option>
+            <option value="61">🇦🇺 +61</option>
+            <option value="49">🇩🇪 +49</option>
+            <option value="33">🇫🇷 +33</option>
+            <option value="82">🇰🇷 +82</option>
+            <option value="852">🇭🇰 +852</option>
+            <option value="65">🇸🇬 +65</option>
+            <option value="62">🇮🇩 +62</option>
+            <option value="91">🇮🇳 +91</option>
+            <option value="7">🇷🇺 +7</option>
+            <option value="60">🇲🇾 +60</option>
+            <option value="63">🇵🇭 +63</option>
+            <option value="34">🇪🇸 +34</option>
+            <option value="39">🇮🇹 +39</option>
+            <option value="886">🇹🇼 +886</option>
+            <!-- Add more countries as needed -->
+          </select>
+        </div>
+        <div class="form-field field field--phone-number">
+          <label for="phone">{{ 'customer.login_page.phone' | t }}</label>
+          <input type="tel" name="customer[note][phone]" class="form-control input--phone" value="{{ form.phone }}" placeholder="{{ 'customer.login_page.phone' | t }}" />
+        </div>
+      </div>
+      <button class="btn btn--primary w-full">
+        {{ 'customer.register.submit' | t }}
+      </button>
+      <div class="switch-login-section">
+        <a href="{{ routes.account_login_url }}" class="btn btn--underline self-center">
+          {{ 'customer.login_page.sign_in' | t }}
+        </a>
+      </div>
+    {%- endform -%}
+  </div>
+</div>
+<script src="{{ 'register.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "t:sections.main-register.name",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 100
+    }
+  ]
+}
+{% endschema %}
+
+<script>
+  // Initialize localStorage to indicate that the request is coming from the register form
+  localStorage.setItem("requestFromRegisterForm", 1);
+  window.errorMessages = {
+    firstNameRequired: "{{ 'customer.register.first_name_required' | t }}",
+    lastNameRequired: "{{ 'customer.register.last_name_required' | t }}",
+    emailRequired: "{{ 'customer.register.email_required' | t }}",
+    emailInvalid: "{{ 'customer.register.email_invalid' | t }}",
+    emailExists: "{{ 'customer.register.email_exists' | t }}",
+    passwordRequired: "{{ 'customer.register.password_required' | t }}",
+    isdCodeRequired: "{{ 'customer.register.isd_code_required' | t }}",
+    phoneRequired: "{{ 'customer.register.phone_required' | t }}",
+    phoneInvalid: "{{ 'customer.register.phone_invalid' | t }}",
+    phoneLeadingZero: "{{ 'customer.register.phone_leading_zero' | t }}",
+    phoneExists: "{{ 'customer.register.phone_exists' | t }}"
+  };
+</script>
