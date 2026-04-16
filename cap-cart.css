@@ -1,0 +1,320 @@
+.cap-block {
+  padding: 20px 5px;
+  background-color: #fafafa;
+  border-top: 1px solid #ddd;
+  /* max-width: 450px; */
+}
+.cap-block__content{
+    display: none;
+}
+.cap-block__content.active {
+    display: block;
+}
+.cap-block .cap-block__title h3 {
+  color: #333;
+  font-size: 20px;
+}
+.cap-block__title, button, .add-jpscard-button {
+    cursor: pointer;
+}
+.cap-block__inner {
+    width: 100%;
+}
+.cap-block__content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out;
+    width: 100%;
+}
+.cap-block__content.active {
+    max-height: 500px;
+}
+.jps_club_id_container {
+    padding-right: 10px;
+}
+.cap-block__item.jps_club.content-left {
+    width: 72%;
+    float: left;
+}
+.cap-block__item.jps_club.content-right {
+    float: right;
+    width: 22%;
+    text-align: center;
+    margin-top: 20px;
+}
+/* .jps_club_id_container .jps_club_id__input,
+.mobile_no_id_container .mobile_no_id__input {
+    width: 100%;
+    height: 50px;
+    border: 0;
+    letter-spacing: 1.3px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid #777;
+    background-color: #fafafa;
+    outline: none;
+    outline-offset: unset;
+    box-shadow: none;
+    padding-bottom: 0px;
+}
+.jps_club_add.add-jpscard-button {
+    width: 70px;
+    height: 60px;
+    background-color: #fafafa;
+    border: 1px solid #777;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+} */
+.mycard-error-msg{
+    display: none;
+    color: red;
+}
+.mycard-error-msg.active {
+    display: block;
+}
+
+.otp-popup-form {
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.otp-popup-form .form-content {
+    background: #fff;
+    border-radius: 8px;
+    width: 370px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.18);
+    padding: 32px 24px 28px 24px;
+    position: relative;
+    text-align: center;
+}
+
+.otp-popup-form .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.otp-popup-form h2 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.otp-popup-form p {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.otp-popup-form .phone-number {
+    font-weight: bold;
+}
+
+.otp-popup-form .otp-inputs {
+    display: flex;
+    justify-content: center;
+    margin: 24px 0;
+}
+
+.otp-popup-form .otp-inputs input {
+    width: 32px;
+    height: 38px;
+    margin: 0 5px;
+    padding: 0;
+    text-align: center;
+    border: 1px solid #999;
+    border-radius: 6px;
+    font-size: 18px;
+}
+
+.otp-popup-form .otp-inputs input:focus {
+    border: 1px solid #000;
+}
+
+.otp-popup-form button {
+    width: 90%;
+    padding: 10px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 5px 0px;
+}
+
+.otp-popup-form .help-link {
+    margin-top: 10px;
+    font-size: 12px;
+}
+
+.otp-popup-form .timer {
+    font-weight: bold;
+    color: red;
+}
+
+.otp-popup-form .error-message {
+    font-size: 13px;
+    color: red;
+    margin-top: 10px;
+}
+.gradient #MainContent.content-for-layout{
+    display: inline-block;
+}
+.content-for-layout .shopify-section{
+    float: left;
+    width: 100%;
+}
+.gradient #MainContent.content-for-layout .shopify-section.cart__footer-wrapper {
+    width: 30%;
+    min-width: 430px;
+    margin-top: 50px;
+}
+.gradient #MainContent.content-for-layout .shopify-section.cart__footer-wrapper .cart__blocks{
+    width: 36rem;
+}
+.mycards-point-lable .points {
+    float: right;
+    font-weight: bold;
+}
+select#redeemption {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    border: none;
+    background-color: transparent;
+    border-radius: 0;
+    outline: none;
+
+    font-family: inherit;
+    font-size: inherit;
+    color: #333;
+    padding: 8px 30px 8px 0;
+    cursor: pointer;
+    width: auto;
+    display: inline-block;
+    line-height: 1.5;
+
+
+    border-bottom: 1px solid #000;
+
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23333333'%3E%3Cpath d='M8 11.414l-4.707-4.707a1 1 0 0 1 1.414-1.414L8 8.586l3.293-3.293a1 1 0 1 1 1.414 1.414L8 11.414z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 12px 12px;
+}
+
+select#redeemption:focus {
+    border-bottom-color: #555;
+    box-shadow: none;
+}
+
+select#redeemption option {
+    background-color: #fff;
+    color: #333;
+}
+
+select#redeemption::-ms-expand {
+    display: none;
+}
+button.action.btn.btn--primary.btn-primary-redeem {
+    padding: 8px 16px;
+    background-color: #000;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    height: 50px;
+    letter-spacing: 1.6px;
+
+}
+.submit-redeem-points {
+    margin: 10px 0;
+}
+.redeem-block .redeemable_price{
+    float: right;
+    font-weight: bold;
+}
+.mycards-content .mycards.method {
+    display: none;
+}
+.mycards-content .mycards.method.active {
+    display: block;
+}
+/* .mycards-methods {
+    padding-bottom: 10px;
+} */
+.otp-popup-form .resend-content {
+    display: none;
+    font-size: 13px;
+}
+.otp-popup-form .resend-content a {
+    text-decoration: underline;
+}
+.otp-popup-form .resend-content.active {
+    display: block;
+}
+
+.jpscard-group,
+.shopify-section.cart-section .cart-items .jpscard-group,
+.shopify-section .cart__footer .cart__footer--cart-link.active{
+    display: none;
+    position: relative;
+    max-width: 340px;
+}
+.jpscard-group.active {
+    display: block;
+}
+
+.jpscard-group .eligible-points {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    background: unset;
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    padding: 20px 30px 25px;
+    border-radius: 4px;
+    color: #fff;
+    text-transform: uppercase;
+}
+.jpscard-group-img{
+    height: auto;
+    max-width: 100%;
+}
+.jpscard-group .eligible-points .point-label{
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+}
+.jpscard-group .eligible-points .points {
+    font-size: 38px;
+    padding-top: 10px;
+    color: #fff;
+}
+.shopify-account.right-layout {
+    width: 100%;
+}
+
+.shopify-account.right-layout .cart__footer--cart-link {
+    background: #fff;
+}
+
+@media (min-width: 992px) {
+  .shopify-account.right-layout {
+    width: 30%;
+    min-width: 430px;
+  }
+}

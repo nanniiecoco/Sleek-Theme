@@ -1,0 +1,139 @@
+/* Font */
+@font-face {
+    font-family: 'icomoon';
+    src: url('icomoon.woff');
+}
+
+/* General Container */
+
+/* Headings */
+my-jps-club.cart__footer--cart-link {
+    background: #fbf8e7;
+}
+
+my-jps-club h4 {
+    font-size: 18px;
+}
+
+/* Text */
+my-jps-club p {
+    font-size: 15px;
+    color: #222;
+    margin: 0;
+    line-height: 1.7em;
+}
+
+my-jps-club strong {
+    font-weight: 700;
+    color: #222;
+}
+
+/* Points Section */
+my-jps-club .points {
+    display: inline-block;
+}
+
+my-jps-club .available-points {
+    margin-top: 0;
+    font-size: 16px;
+}
+
+/* Redeemable Price */
+my-jps-club .redeemable_price {
+    color: #222;
+    font-size: 16px;
+    margin-top: 5px;
+}
+
+my-jps-club .redeem-btn-container .loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    transform: none;
+    align-items: center;
+    justify-content: center;
+}
+
+my-jps-club .redeem-btn-container.loading .loading-overlay {
+    display: flex;
+    background: white;
+}
+
+my-jps-club .redeem-btn-container.loading .loading-overlay svg {
+    width: 24px;
+    height: 24px;
+}
+
+my-jps-club .redeem-btn-container.loading .redeem-btn {
+    opacity: 0.5;
+}
+
+/* Available Points Select */
+my-jps-club .available-points select {
+    min-width: 60px;
+    margin-right: 10px;
+}
+
+/* My Cards Points Row */
+my-jps-club .mycards-point-row {
+    padding: 5px 0;
+}
+
+my-jps-club .redeem-btn-container {
+    padding-top: 20px;
+}
+
+my-jps-club .mycards-point-row span:last-child {
+    font-weight: bold;
+}
+
+/* Accordion Toggle */
+my-jps-club .accordion-toggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+my-jps-club .accordion-toggle .arrow {
+    display: inline-block;
+    height: 14px;
+    margin-right: 12px;
+    transition: transform 0.3s;
+    vertical-align: middle;
+}
+
+my-jps-club .accordion-toggle .arrow::before {
+    content: '';
+    display: block;
+    width: 14px;
+    height: 14px;
+    border: solid #000;
+    border-width: 0 0 3px 3px;
+    border-radius: 2px;
+    transform: rotate(135deg);
+    box-sizing: border-box;
+}
+
+/* Arrow States (Down & Up) */
+my-jps-club .accordion-toggle[aria-expanded="false"] .arrow {
+    transform: rotate(0deg);
+}
+
+my-jps-club .accordion-toggle[aria-expanded="true"] .arrow {
+    transform: rotate(180deg);
+}
+
+my-jps-club .mycards-point-row span.no-points-error {
+    color: red;
+    font-weight: 400;
+    font-size: 14px;
+}
+
+my-jps-club .mycards-point-row .point-not-sufficient {
+    font-weight: 400 !important;
+}
