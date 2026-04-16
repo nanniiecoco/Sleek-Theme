@@ -1,0 +1,43 @@
+{{ 'otp-redemption-verification-popup.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'otp-redemption-verification-popup.js' | asset_url }}" defer="defer"></script>
+
+<otp-redemption-verification-popup style="display: none;" class="otp-redemption-verification-popup"
+                                   data-invalid-otp-message="{{ 'point_redemption.invalid_otp' | t }}"
+                                   data-otp-sent-message="{{ 'point_redemption.otp_sent' | t }}">
+    <div class="otp-modal">
+        <div class="otp-modal-content">
+            <button class="otp-close">&times;</button>
+            <h2>{{ 'point_redemption.otp_verification' | t }}</h2>
+            <p class="otp-instruction">{{ 'point_redemption.enter_otp_prompt' | t }}</p>
+            <div class="otp-phone">
+                <span class="otp-mobile-number"></span>
+            </div>
+            <div class="otp-inputs">
+                <input type="text" maxlength="1" />
+                <input type="text" maxlength="1" />
+                <input type="text" maxlength="1" />
+                <input type="text" maxlength="1" />
+                <input type="text" maxlength="1" />
+                <input type="text" maxlength="1" />
+            </div>
+            <div class="otp-message">
+            </div>
+            <div class="otp-resend-row" style="display: none;">
+                <span>
+                  {{ 'point_redemption.did_not_receive_otp' | t }}
+                  <a href="#" class="resend-otp">{{ 'point_redemption.resend_otp' | t }}</a>
+                </span>
+            </div>
+            <div class="otp-timer">
+                00 : 00 : 00
+            </div>
+            <button class="otp-submit">{{ 'point_redemption.submit' | t }}</button>
+            <div class="otp-help">
+                {{ 'point_redemption.need_help' | t }}
+            </div>
+            <span class="loading-overlay">
+                {% render 'svg-icons' with 'thb-loading' %}
+            </span>
+        </div>
+    </div>
+</otp-redemption-verification-popup>
