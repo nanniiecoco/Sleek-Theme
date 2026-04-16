@@ -1,0 +1,255 @@
+{{ 'customer.css' | asset_url | stylesheet_tag }}
+{{ 'customer-main.js' | asset_url | script_tag }}
+
+<div
+  class="customer account section section--padding"
+  style="--section-padding-top: {{ section.settings.padding_top }}px;--section-padding-bottom: {{ section.settings.padding_bottom }}px;"
+>
+  <div class="page-width">
+    <header class="customer__header flex md:flex-row flex-col justify-between items-center gap-4">
+      <h1 class="customer__title">{{ 'customer.account.title' | t }}</h1>
+      <a href="{{ routes.account_logout_url }}" class="btn btn--primary">
+        {{ 'customer.log_out' | t }}
+      </a>
+    </header>
+
+    <div class="customer__body">
+      {% include 'returnprime_script' %}
+      <div class="customer__sidebar flex flex-col gap-y-3">
+        <div class="customer__widget blocks-radius flex flex-col gap-y-3">
+          <h2 class="h3">{{ 'customer.account.details' | t }}</h2>
+          {{ customer.default_address | format_address }}
+          <a href="{{ routes.account_addresses_url }}" class="btn btn--underline self-start">
+            {{ 'customer.account.view_addresses' | t }} ({{ customer.addresses_count }})
+          </a>
+          <div class="shopify-account right-layout">
+            {% render 'cap' %}
+          </div>
+        </div>
+        <div class="customer__widget blocks-radius flex flex-col gap-y-3">
+          <h2 class="h3">
+            {{ 'customer.size_preference.title' | t }}
+            {% if customer.metafields.custom.reference_variant.value %}
+              <small class="edit-wrap">
+                <span class="btn-edit">{% render 'svg-icons' with 'thb-edit' %}{{ 'customer.size_preference.edit' | t }}</span>
+              </small>
+              <small class="save-wrap hidden">
+                <span class="btn-save">{% render 'svg-icons' with 'thb-check' %}{{ 'customer.size_preference.save' | t }}</span>
+                <span class="btn-cancel">{% render 'svg-icons' with 'thb-cancel' %}{{ 'customer.size_preference.cancel' | t }}</span>
+              </small>
+            {% endif %}
+          </h2>
+          {% comment %} list item from customer metafield json "Reference Variants" {% endcomment %}
+          {% if customer.metafields.custom.reference_variant.value %}
+          <table class="size-preference-table">
+            <thead>
+              <tr>
+                <th>{{ 'customer.size_preference.product_category' | t }}</th>
+                <th>{{ 'customer.size_preference.size' | t }}</th>
+                <th>{{ 'customer.size_preference.size_saved_product' | t }}</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% assign sizes_array = customer.metafields.custom.reference_variant.value | parse_json %}
+            {% for item in sizes_array %}
+              <tr>
+                <td>{{ item.category }}</td>
+                <td>
+                  {% assign available_sizes = "XS, S, M, L, XL, XXL, XXXL" | split: ", " %}
+                  {% assign preferred_size = item.size | downcase %}
+                  <select class="select-size" name="size" disabled>
+                    {% for size in available_sizes %}
+                      {% assign size_downcase = size | downcase %}
+                      <option value="{{ size }}" {% if size_downcase == preferred_size %}selected{% endif %}>
+                        {{ size }}
+                      </option>
+                    {% endfor %}
+                  </select>
+                </td>
+                <td>
+                  {% if item['size saved product'] %}
+                    <a href="{{ item['size saved product'] }}">{{ item['size saved product'] }}</a>
+                  {% else %}
+                    N/A
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+          {% else %}
+            <p>{{ 'customer.size_preference.data_empty' | t }}</p>
+          {% endif %}
+        </div>
+      </div>
+      <div class="customer__content">
+        <div class="rich-text">
+          <h2 class="h3">{{ 'customer.orders.title' | t }}</h2>
+        </div>
+
+        {% paginate customer.orders by 20 %}
+          {%- if customer.orders.size > 0 -%}
+            <div class="table-container table-container--mobile-scrollable fixed-side">
+              <table role="table" class="table order-history">
+                <caption class="visually-hidden">
+                  {{ 'customer.orders.title' | t }}
+                </caption>
+                <thead role="rowgroup">
+                  <tr role="row">
+                    <th id="ColumnOrder" scope="col" role="columnheader" class="h6">
+                      {{ 'customer.orders.order_number' | t }}
+                    </th>
+                    <th id="ColumnDate" scope="col" role="columnheader" class="h6">{{ 'customer.orders.date' | t }}</th>
+                    <th id="ColumnPayment" scope="col" role="columnheader" class="h6">
+                      {{ 'customer.orders.payment_status' | t }}
+                    </th>
+                    <th id="ColumnFulfillment" scope="col" role="columnheader" class="h6">
+                      {{ 'customer.orders.fulfillment_status' | t }}
+                    </th>
+                    <th id="ColumnTotal" scope="col" role="columnheader" class="h6">
+                      {{ 'customer.orders.total' | t }}
+                    </th>
+                    <th>Return</th>
+                  </tr>
+                </thead>
+                <tbody role="rowgroup">
+                  {%- for order in customer.orders -%}
+                    <tr role="row">
+                      <td
+                        id="RowOrder"
+                        role="cell"
+                        headers="ColumnOrder"
+                        data-label="{{ 'customer.orders.order_number' | t }}"
+                      >
+                        <a
+                          href="{{ order.customer_url }}"
+                          aria-label="{{ 'customer.orders.order_number_link' | t: number: order.name }}"
+                          class="reversed-link"
+                        >
+                          {{ order.name }}
+                        </a>
+                      </td>
+                      <td headers="RowOrder ColumnDate" role="cell" data-label="{{ 'customer.orders.date' | t }}">
+                        {{ order.created_at | time_tag: format: 'date' }}
+                      </td>
+                      <td
+                        headers="RowOrder ColumnPayment"
+                        role="cell"
+                        data-label="{{ 'customer.orders.payment_status' | t }}"
+                      >
+                        {{ order.financial_status_label }}
+                      </td>
+                      <td
+                        headers="RowOrder ColumnFulfillment"
+                        role="cell"
+                        data-label="{{ 'customer.orders.fulfillment_status' | t }}"
+                      >
+                        {{ order.fulfillment_status_label }}
+                      </td>
+                      <td headers="RowOrder ColumnTotal" role="cell" data-label="{{ 'customer.orders.total' | t }}">
+                        {{ order.total_net_amount | money_with_currency }}
+                      </td>
+                      <td data-order_name={{order.id}} data-label="Return" class="return__exchange">
+                        {% if order.fulfillment_status == 'fulfilled' %}
+                          <button class="js-return-exchange {% if order.fulfillment_status != 'fulfilled' %} disabled{% endif %}" data-order="{{ order.name }}" data-customer="{{ customer.email }}">Return</button>
+                        {% else %}
+                          <p class="js-return-exchange disabled"> Not Available </p>
+                        {% endif %}
+                      </td>
+                    </tr>
+                  {%- endfor -%}
+                </tbody>
+              </table>
+            </div>
+          {%- else -%}
+            <p>{{ 'customer.orders.none' | t }}</p>
+          {%- endif -%}
+
+          {%- if paginate.pages > 1 -%}
+            {%- if paginate.parts.size > 0 -%}
+              <nav class="pagination" role="navigation" aria-label="{{ 'general.pagination.label' | t }}">
+                <ul class="pagination__list list-unstyled flex items-center flex-wrap justify-start" role="list">
+                  {%- if paginate.previous -%}
+                    <li>
+                      <a class="pagination__item pagination__item--previous pagination__item-arrow link motion-reduce" href="{{ paginate.previous.url }}" aria-label="{{ 'general.pagination.previous' | t }}">
+                        {% render 'icon-caret', size: 'extra-small' %}
+                      </a>
+                    </li>
+                  {%- endif -%}
+
+                  {%- for part in paginate.parts -%}
+                    <li>
+                      {%- if part.is_link -%}
+                        <a
+                          href="{{ part.url }}"
+                          aria-label="{{ 'general.pagination.page' | t: number: part.title }}"
+                          class="pagination__item"
+                        >
+                          {{- part.title -}}
+                        </a>
+                      {%- else -%}
+                        {%- if part.title == paginate.current_page -%}
+                          <a
+                            role="link"
+                            aria-disabled="true"
+                            class="pagination__item pagination__item--current background-2"
+                            aria-current="page"
+                            aria-label="{{ 'general.pagination.page' | t: number: part.title }}"
+                          >
+                            {{- part.title -}}
+                          </a>
+                        {%- else -%}
+                          <span class="pagination__item">{{ part.title }}</span>
+                        {%- endif -%}
+                      {%- endif -%}
+                    </li>
+                  {%- endfor -%}
+
+                  {%- if paginate.next -%}
+                    <li>
+                      <a class="pagination__item pagination__item--next pagination__item-arrow motion-reduce" href="{{ paginate.next.url }}" aria-label="{{ 'general.pagination.next' | t }}">
+                        {% render 'icon-caret', size: 'extra-small' %}
+                      </a>
+                    </li>
+                  {%- endif -%}
+                </ul>
+              </nav>
+            {%- endif -%}
+          {%- endif -%}
+        {% endpaginate %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.main-account.name",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 100
+    }
+  ]
+}
+{% endschema %}
