@@ -1,0 +1,10 @@
+@font-face {
+  font-family: 'tl-icon-font';
+  src: url('../font/tl-icon-font.eot?43156607');
+  src: url('../font/tl-icon-font.eot?43156607#iefix') format('embedded-opentype'),
+       url('../font/tl-icon-font.woff?43156607') format('woff'),
+       url('../font/tl-icon-font.ttf?43156607') format('truetype'),
+       url('../font/tl-icon-font.svg?43156607#tl-icon-font') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
