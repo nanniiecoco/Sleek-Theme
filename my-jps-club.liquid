@@ -1,0 +1,57 @@
+<script src="{{ 'my-jps-club.js' | asset_url }}" defer="defer"></script>
+{{ 'my-jps-club.css' | asset_url | stylesheet_tag }}
+{{ 'accordion.js' | asset_url | script_tag }}
+
+{% if cart != empty and customer and customer.metafields.capillary.myjpscard_id and customer.metafields.capillary.capillary_loyalty_type and customer.metafields.capillary.linkcard %}
+    <my-jps-club class="cart__addon cart__footer--cart-link"
+            data-card-id="{{ customer.metafields.capillary.myjpscard_id | escape }}"
+            data-cart-total="{{ cart.total_price | divided_by: 100.0 | round: 2 }}"
+            data-capillary-loyalty-type="{{ customer.metafields.capillary.capillary_loyalty_type | escape }}"
+            data-capillary-loyalty-group="{{ customer.metafields.capillary.capillary_loyalty_group | escape }}"
+            data-currency="{{ localization.country.currency.symbol | escape }}"
+            data-customer-id="{{ customer.id }}" style="display: none;">
+        <details is="accordion-details" class="accordion-details cart-accordion-details">
+            <summary class="accordion-details__summary flex items-center justify-between font-body-bolder h6">
+                <div class="flex gap-2 items-center">
+                    <h4>{{ 'point_redemption.jps_club_heading' | t }}</h4>
+                </div>
+                {%- render 'icon-caret-down' -%}
+            </summary>
+            <cart-note class="flex flex-col items-start gap-5 accordion-details__content">
+                <div class="accordion-details__content w-full">
+                    <div class="mycards-point-row">
+                        <span>{{ 'point_redemption.member_id_label' | t }}</span> <span>{{ customer.metafields.capillary.myjpscard_id }}</span>
+                    </div>
+                    <div class="mycards-point-row eligible-points" style="display: none;">
+                        <span>{{ 'point_redemption.eligible_points' | t }} </span><span class="points"></span>
+                    </div>
+                    <div class="available-points" style="display:none">
+                        <div class="mycards-point-row select-points-row" style="display: none;">
+                            <div class="select">
+                                <select id="redemption-points-select" data-please-select-label="{{ 'point_redemption.please_select' | t }}" name="redemption-points-select" class="redemption-points-select form-control form-control--select" style="display: none;">
+                                </select>
+                                {%- render 'icon-caret-down' -%}
+                            </div>
+                            <span class="no-points-error" style="display: none;">{{ 'point_redemption.insufficient_balance' | t }}</span>
+                            <div id="redeemable_price" class="redeemable_price" data-discount-amount-label="{{ 'point_redemption.discount_amount' | t }}"></div>
+                        </div>
+                        <div class="mycards-point-row used-points-row" style="display: none;">
+                            <span>{{ 'point_redemption.used_points' | t }} </span><span class="used-points-value"></span>
+                        </div>
+
+                        <div class="mycards-point-row redeem-btn-container">
+                            <button id="redeem-btn" class="redeem-btn btn btn--primary" data-redeem-btn-label="{{ 'point_redemption.redeem' | t }}"
+                                    data-cancel-btn-label="{{ 'point_redemption.cancel' | t }}" >{{ 'point_redemption.redeem' | t }}</button>
+                            <span class="loading-overlay">
+                                {% render 'svg-icons' with 'thb-loading' %}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="mycards-point-row">
+                        <span class="point-not-sufficient" style="display: none;">{{ 'point_redemption.points_not_sufficient' | t }}</span>
+                    </div>
+                </div>
+            </cart-note>
+        </details>
+    </my-jps-club>
+{% endif %}
