@@ -1,0 +1,121 @@
+{{ 'cap-cart.css' | asset_url | stylesheet_tag }}
+<div id="loader-overlay" class="overlay">
+    <div class="spinner"></div>
+</div>
+<style>
+    .overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+        z-index: 99;
+    }
+    .spinner {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #3498db;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+    }
+</style>
+
+{% if customer %}
+    <div class="cart__addon cart__footer--cart-link no-js-hidden {% if customer.metafields.capillary.linkcard %} active{% endif %}">
+        <details is="accordion-details" class="accordion-details cart-accordion-details">
+            <summary class="accordion-details__summary flex items-center justify-between font-body-bolder h6">
+            <div class="flex gap-2 items-center">
+                <h4>{{ 'JPS CLUB' }}</h4>
+            </div>
+            {%- render 'icon-caret-down' -%}
+            </summary>
+            <cart-note class="flex flex-col items-start gap-5 accordion-details__content">
+                <div class="accordion-details__content w-full">
+                    {% if customer.metafields.capillary.linkcard  %}
+                        <div class="jpscard-group">
+                            <img class="jpscard-group-img" src="https://mcstaging-1-5.cpschaps.com/media/smartosc/capillary/tier_jps_plus/default/JPS_PLUS__2.png" alt="Capillary Image">
+                            <div class="eligible-points">
+                                <h3 class="point-label">{{ 'Eligible Points' }}</h3>
+                                <h2 class="points">0</h2>
+                            </div>
+                            <input type="hidden" name="name-type-card" id="name-type-card" value="{{ customer.metafields.capillary.capillary_loyalty_group }}">
+                            <input type="hidden" name="myjpscard_id" id="myjpscard_id" value="{{ customer.metafields.capillary.myjpscard_id }}">
+                            <div class="cap-block__error">
+                                <span class="mycard-error-msg">
+                                    Please enter your Card ID
+                                </span>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="mycards-methods form-field w-full">
+                            <label class="form-label" for="link-method">Link method</label>
+                            <div class="select">
+                                <select name="link-method" id="link-method" class="form-control form-control--select">
+                                    <option value="jps_club" selected>JPS Club ID</option>
+                                    <option value="mobile_no">Mobile No.</option>
+                                </select>
+                                {%- render 'icon-caret-down' -%}
+                            </div>
+                        </div>
+                        <div class="cap-block__item jps_club--id form-field w-full">
+                            <div class="mycards-content">
+                                <div class="mycards method jps_club active">
+                                    <label class="jps_club_id__title form-label" for="myjpscard_id">
+                                        {{ 'JPS CLUB ID' }}
+                                    </label>
+                                    <input class="jps_club_id__input form-control form-control--input" type="text" name="club_id" id="myjpscard_id" value="" placeholder="Enter JPS Club ID">
+                                </div>
+                                <div class="mycards method mobile_no">
+                                    <label class="mobile_no_id__title  form-label">
+                                        {{ 'Mobile No' }}
+                                    </label>
+                                    <input class="mobile_no_id__input form-control form-control--input" type="text" name="mobile_no" id="mymobile_no" value="" placeholder="Enter Mobile No">
+                                </div>
+                                <span class="mycard-error-msg">Please enter your Card ID</span>
+                            </div>
+                        </div>
+                        <div class="cap-block__item jps_club--add form-field w-full">
+                            <div class="jps_club_add add-jpscard-button btn btn--primary">
+                                {{ 'Add' }}
+                            </div>
+                            <span class="loading-overlay hidden">
+                                {% render 'svg-icons' with 'thb-loading' %}
+                            </span>
+                        </div>
+                    {% endif %}
+                </div>
+            </cart-note>
+        </details>
+    </div>
+    <!-- Popup Form -->
+    <div id="otpPopupForm" class="otp-popup-form" style="display: none;">
+        <div class="form-content">
+            <span id="closeOtpButton" class="close-btn">&times;</span>
+            <h2>OTP Verification</h2>
+            <p>Please enter the OTP that has been sent to</p>
+            <p class="phone-number"></p>
+            <input type="hidden" name="phone-val" id="phone-val" value="{{ club.phone }}">
+            <input type="hidden" name="customer-id-val" id="customer-id-val" value="{{ customer.id }}">
+            <input type="hidden" name="time-show-rs" id="resend-time" value="">
+            <div class="otp-inputs">
+                <input class="otp-input" type="text" maxlength="1">
+                <input class="otp-input" type="text" maxlength="1">
+                <input class="otp-input" type="text" maxlength="1">
+                <input class="otp-input" type="text" maxlength="1">
+                <input class="otp-input" type="text" maxlength="1">
+                <input class="otp-input" type="text" maxlength="1">
+            </div>
+            <p class="resend-content">Didn't received OTP? <a href="#" id="resendOtpLink">Resend OTP</a></p>
+            <p class="timer" id="otpTimer">05:00</p>
+            <p class="error-message" id="otpErrorMessage" style="display: none;">OTP expired. Please resend.</p>
+            <button type="submit" id="submitOtpButton">Submit</button>
+            <p class="help-link">Need Help? Please visit <a href="#">JPS Club website</a></p>
+        </div>
+    </div>
+    <script src="{{ 'cap-cart.js' | asset_url }}" defer="defer"></script>
+{% endif %}
