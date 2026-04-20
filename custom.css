@@ -1,0 +1,184 @@
+@charset "UTF-8";
+/* Custom CSS for the application */
+/* General Styles */
+
+.register .switch-login-section {
+  display: none;
+}
+
+.fields--phone {
+  flex-wrap: wrap;
+}
+
+.fields--phone .form-field {
+  margin-top: 2.4rem;
+}
+
+.fields--phone .field--isd-code {
+  width: 120px;
+}
+
+.fields--phone .field--phone-number {
+  width: calc(100% - 132px);
+}
+
+#create_customer input.disabled,
+#create_customer select.disabled {
+  pointer-events: none;
+}
+
+#mo-otp-register {
+  padding-top: 2.4rem;
+}
+
+#mo-otp-register * {
+  font-family: inherit;
+}
+
+#mo-otp-register [type=radio] {
+  position: absolute;
+}
+
+#mo-otp-register input[type=email] {
+  border: 1px solid #e6e6e6;
+  border-radius: 30px;
+  margin-top: 2.4rem;
+}
+
+#mo-otp-register input[name=verificationCode] {
+  border: 1px solid #e6e6e6;
+  border-radius: 30px;
+}
+
+#mo-otp-register .motw-relative {
+  margin-top: 2.4rem;
+}
+
+#mo-otp-register .motw-items-stretch {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+#mo-otp-register .motw-items-stretch .motw-border.motw-flex.motw-items-center {
+  border-radius: 30px;
+}
+
+#mo-otp-register .motw-items-stretch .motw-border.motw-flex.motw-items-center .motw-bg-white {
+  background: none;
+}
+
+#mo-otp-register .motw-peer:checked ~ .peer-checked\:motw-outline-2 {
+  background: #e8f0fe;
+  outline-width: 0;
+}
+
+#mo-otp-register .motw-gap-8 {
+  gap: 0;
+}
+
+#mo-otp-register label .motw-text-2xl {
+  font-size: 14px;
+}
+
+#mo-otp-register label.motw-p-5 {
+  border-radius: 0;
+  gap: 10px;
+}
+
+#mo-otp-register .motw-rounded {
+  border-radius: 0;
+}
+
+#mo-otp-register .motw-border-\[1px\] {
+  border: none;
+}
+
+#mo-otp-register input[type=email]::placeholder {
+  color: #666;
+}
+
+#mo-otp-register .motw-p-5 {
+  padding: 10px;
+}
+
+#mo-otp-register .motw-py-5 {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+#mo-otp-register img.motw-w-10 {
+  width: 24px;
+}
+
+#mo-otp-register img + span {
+  font-size: 14px;
+}
+
+#mo-otp-register .motw-text-red-500,
+.register-field-error {
+  color: #ff0000;
+  font-size: 12px;
+  margin: 5px 0 0;
+  width: 100%;
+  order: 2;
+}
+
+#mo-otp-register .motw-text-red-500 {
+  order: inherit;
+}
+
+#mo-otp-register .custom-register-btn {
+  background: #10172a;
+  color: #fff;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  padding: 10px;
+}
+
+#mo-otp-register button.motw-p-5.motw-flex.motw-items-center {
+  border-radius: 30px;
+  margin-top: 2.4rem;
+}
+
+#mo-otp-register .custom-register-btn.hidden {
+  display: none;
+}
+
+#mo-otp-register .custom-register-btn.loading {
+  pointer-events: none;
+}
+
+#mo-otp-register .custom-register-btn.loading::after {
+  content: "";
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #fff;
+  border-top: 2px solid #10172a;
+  border-radius: 50%;
+  animation: custom-btn-spin 0.7s linear infinite;
+  position: static;
+  margin-left: 10px;
+  vertical-align: middle;
+}
+
+@keyframes custom-btn-spin {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
+}
+
+@media (min-width: 640px) {
+  #mo-otp-register .sm\:motw-max-w-\[448px\] {
+    max-width: 470px;
+  }
+
+  #mo-otp-register .sm\:motw-w-\[448px\] {
+    width: 470px;
+  }
+
+  #mo-otp-register .sm\:motw-gap-8 {
+    gap: 10px;
+  }
+}
