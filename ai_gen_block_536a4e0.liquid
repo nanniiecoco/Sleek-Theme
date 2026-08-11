@@ -1,0 +1,668 @@
+{% doc %}
+  @prompt
+    Section Description:
+    This section features a large background image with editable text and buttons placed on top.
+    A small overlay image is positioned on top of the background image, remaining fixed in place (e.g., center left).
+    The overlay automatically rotates through 1–4 uploaded images in sequence, looping continuously with a smooth fade transition.
+    
+    Functional Requirements:
+    
+    Support background image uploads for both desktop and mobile versions.
+    
+    Allow the background height to be adjustable through section settings (e.g., small / medium / large, or by pixel value).
+    
+    Support up to 4 overlay images, which automatically rotate in a loop.
+    
+    The overlay image position remains fixed, but padding (spacing from edges) can be adjusted through settings (top, left, right, bottom).
+    
+    Text and buttons over the background can be edited (text, links, and position).
+    
+    The entire section should be fully responsive and display correctly on both desktop and mobile.
+    
+    Example:
+    A hero banner with a large adjustable background image.
+    On top of it, a small overlay image (e.g., product shot) appears at the left-center position, cycling through 4 images in a fade loop.
+    On the right, editable text and buttons (e.g., “LEATHERS”, “KNITWEAR”) are displayed.
+    The overlay keeps running automatically while the text and background remain static.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-hero-banner-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .ai-hero-banner-bg-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+  }
+
+  .ai-hero-banner-bg-{{ ai_gen_id }}--small {
+    height: 400px;
+  }
+
+  .ai-hero-banner-bg-{{ ai_gen_id }}--medium {
+    height: 600px;
+  }
+
+  .ai-hero-banner-bg-{{ ai_gen_id }}--large {
+    height: 800px;
+  }
+
+  .ai-hero-banner-container-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    max-width: {{ settings.page_width }}px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    z-index: 2;
+  }
+
+  .ai-hero-banner-overlay-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    width: {{ block.settings.overlay_width }}px;
+    height: {{ block.settings.overlay_height }}px;
+    flex-shrink: 0;
+  }
+
+  .ai-hero-banner-overlay-{{ ai_gen_id }} {
+    position: absolute;
+    top: {{ block.settings.overlay_padding_top }}px;
+    left: {{ block.settings.overlay_padding_left }}px;
+    right: {{ block.settings.overlay_padding_right }}px;
+    bottom: {{ block.settings.overlay_padding_bottom }}px;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+  }
+
+  .ai-hero-banner-overlay-{{ ai_gen_id }}.active {
+    opacity: 1;
+  }
+
+  .ai-hero-banner-overlay-{{ ai_gen_id }} img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .ai-hero-banner-content-{{ ai_gen_id }} {
+    flex: 1;
+    text-align: {{ block.settings.text_alignment }};
+    color: {{ block.settings.text_color }};
+  }
+
+  .ai-hero-banner-heading-{{ ai_gen_id }} {
+    font-size: {{ block.settings.heading_size }}px;
+    margin: 0 0 20px;
+    color: {{ block.settings.text_color }};
+    font-weight: 500;
+  }
+
+  .ai-hero-banner-subheading-{{ ai_gen_id }} {
+    font-size: {{ block.settings.subheading_size }}px;
+    margin: 0 0 30px;
+    color: {{ block.settings.text_color }};
+  }
+
+  .ai-hero-banner-buttons-{{ ai_gen_id }} {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+
+  .ai-hero-banner-buttons-{{ ai_gen_id }}--left {
+    justify-content: flex-start;
+  }
+
+  .ai-hero-banner-buttons-{{ ai_gen_id }}--center {
+    justify-content: center;
+  }
+
+  .ai-hero-banner-buttons-{{ ai_gen_id }}--right {
+    justify-content: flex-end;
+  }
+
+  .ai-hero-banner-button-{{ ai_gen_id }} {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 30px;
+    background-color: {{ block.settings.button_bg_color }};
+    color: {{ block.settings.button_text_color }};
+    text-decoration: none;
+    border: 1px solid {{ block.settings.button_border_color }};
+    transition: all 0.3s ease;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: capitalize;
+  }
+
+  .ai-hero-banner-button-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_bg_color }};
+    color: {{ block.settings.button_hover_text_color }};
+    border-color: {{ block.settings.button_hover_border_color }};
+  }
+
+  @media screen and (max-width: 989px) {
+    .ai-hero-banner-bg-{{ ai_gen_id }}--small {
+      height: 300px;
+    }
+
+    .ai-hero-banner-bg-{{ ai_gen_id }}--medium {
+      height: 400px;
+    }
+
+    .ai-hero-banner-bg-{{ ai_gen_id }}--large {
+      height: 500px;
+    }
+
+    .ai-hero-banner-container-{{ ai_gen_id }} {
+      flex-direction: column;
+      gap: 30px;
+      padding: 40px 20px;
+    }
+
+    .ai-hero-banner-overlay-wrapper-{{ ai_gen_id }} {
+      width: {{ block.settings.overlay_width | times: 0.7 }}px;
+      height: {{ block.settings.overlay_height | times: 0.7 }}px;
+    }
+
+    .ai-hero-banner-heading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.heading_size | times: 0.7 }}px;
+    }
+
+    .ai-hero-banner-subheading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.subheading_size | times: 0.8 }}px;
+    }
+
+    .ai-hero-banner-content-{{ ai_gen_id }} {
+      text-align: center;
+    }
+
+    .ai-hero-banner-buttons-{{ ai_gen_id }} {
+      justify-content: center;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-hero-banner-bg-{{ ai_gen_id }} {
+      background-image: url('{{ block.settings.background_image_mobile | image_url: width: 1500 }}') !important;
+    }
+  }
+{% endstyle %}
+
+<hero-banner-{{ ai_gen_id }}
+  class="ai-hero-banner-{{ ai_gen_id }}"
+  data-rotation-speed="{{ block.settings.rotation_speed }}"
+  {{ block.shopify_attributes }}
+>
+  <div
+    class="ai-hero-banner-bg-{{ ai_gen_id }} ai-hero-banner-bg-{{ ai_gen_id }}--{{ block.settings.background_height }}"
+    style="background-image: url('{{ block.settings.background_image | image_url: width: 2000 }}');"
+  >
+    <div class="ai-hero-banner-container-{{ ai_gen_id }}">
+      {% if block.settings.overlay_position == 'left' %}
+        <div class="ai-hero-banner-overlay-wrapper-{{ ai_gen_id }}">
+          {% if block.settings.overlay_image_1 %}
+            <div class="ai-hero-banner-overlay-{{ ai_gen_id }} active" data-overlay-index="0">
+              <img
+                src="{{ block.settings.overlay_image_1 | image_url: width: 800 }}"
+                alt="{{ block.settings.overlay_image_1.alt | escape }}"
+                loading="lazy"
+              >
+            </div>
+          {% endif %}
+
+          {% if block.settings.overlay_image_2 %}
+            <div class="ai-hero-banner-overlay-{{ ai_gen_id }}" data-overlay-index="1">
+              <img
+                src="{{ block.settings.overlay_image_2 | image_url: width: 800 }}"
+                alt="{{ block.settings.overlay_image_2.alt | escape }}"
+                loading="lazy"
+              >
+            </div>
+          {% endif %}
+
+          {% if block.settings.overlay_image_3 %}
+            <div class="ai-hero-banner-overlay-{{ ai_gen_id }}" data-overlay-index="2">
+              <img
+                src="{{ block.settings.overlay_image_3 | image_url: width: 800 }}"
+                alt="{{ block.settings.overlay_image_3.alt | escape }}"
+                loading="lazy"
+              >
+            </div>
+          {% endif %}
+
+          {% if block.settings.overlay_image_4 %}
+            <div class="ai-hero-banner-overlay-{{ ai_gen_id }}" data-overlay-index="3">
+              <img
+                src="{{ block.settings.overlay_image_4 | image_url: width: 800 }}"
+                alt="{{ block.settings.overlay_image_4.alt | escape }}"
+                loading="lazy"
+              >
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      <div class="ai-hero-banner-content-{{ ai_gen_id }}">
+        {% if block.settings.heading != blank %}
+          <h2 class="ai-hero-banner-heading-{{ ai_gen_id }}">{{ block.settings.heading }}</h2>
+        {% endif %}
+
+        {% if block.settings.subheading != blank %}
+          <div class="ai-hero-banner-subheading-{{ ai_gen_id }}">{{ block.settings.subheading }}</div>
+        {% endif %}
+
+        {% if block.settings.button_1_text != blank or block.settings.button_2_text != blank %}
+          <div class="ai-hero-banner-buttons-{{ ai_gen_id }} ai-hero-banner-buttons-{{ ai_gen_id }}--{{ block.settings.text_alignment }}">
+            {% if block.settings.button_1_text != blank %}
+              <a
+                href="{{ block.settings.button_1_link }}"
+                class="ai-hero-banner-button-{{ ai_gen_id }}"
+              >
+                {{ block.settings.button_1_text }}
+              </a>
+            {% endif %}
+
+            {% if block.settings.button_2_text != blank %}
+              <a
+                href="{{ block.settings.button_2_link }}"
+                class="ai-hero-banner-button-{{ ai_gen_id }}"
+              >
+                {{ block.settings.button_2_text }}
+              </a>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+
+      {% if block.settings.overlay_position == 'right' %}
+        <div class="ai-hero-banner-overlay-wrapper-{{ ai_gen_id }}">
+          {% if block.settings.overlay_image_1 %}
+            <div class="ai-hero-banner-overlay-{{ ai_gen_id }} active" data-overlay-index="0">
+              <img
+                src="{{ block.settings.overlay_image_1 | image_url: width: 800 }}"
+                alt="{{ block.settings.overlay_image_1.alt | escape }}"
+                loading="lazy"
+              >
+            </div>
+          {% endif %}
+
+          {% if block.settings.overlay_image_2 %}
+            <div class="ai-hero-banner-overlay-{{ ai_gen_id }}" data-overlay-index="1">
+              <img
+                src="{{ block.settings.overlay_image_2 | image_url: width: 800 }}"
+                alt="{{ block.settings.overlay_image_2.alt | escape }}"
+                loading="lazy"
+              >
+            </div>
+          {% endif %}
+
+          {% if block.settings.overlay_image_3 %}
+            <div class="ai-hero-banner-overlay-{{ ai_gen_id }}" data-overlay-index="2">
+              <img
+                src="{{ block.settings.overlay_image_3 | image_url: width: 800 }}"
+                alt="{{ block.settings.overlay_image_3.alt | escape }}"
+                loading="lazy"
+              >
+            </div>
+          {% endif %}
+
+          {% if block.settings.overlay_image_4 %}
+            <div class="ai-hero-banner-overlay-{{ ai_gen_id }}" data-overlay-index="3">
+              <img
+                src="{{ block.settings.overlay_image_4 | image_url: width: 800 }}"
+                alt="{{ block.settings.overlay_image_4.alt | escape }}"
+                loading="lazy"
+              >
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</hero-banner-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class HeroBanner{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.currentIndex = 0;
+        this.overlays = [];
+        this.rotationInterval = null;
+      }
+
+      connectedCallback() {
+        this.overlays = Array.from(this.querySelectorAll('.ai-hero-banner-overlay-{{ ai_gen_id }}'));
+        
+        if (this.overlays.length > 1) {
+          const rotationSpeed = parseInt(this.dataset.rotationSpeed) * 1000;
+          this.startRotation(rotationSpeed);
+        }
+      }
+
+      startRotation(speed) {
+        this.rotationInterval = setInterval(() => {
+          this.overlays[this.currentIndex].classList.remove('active');
+          
+          this.currentIndex = (this.currentIndex + 1) % this.overlays.length;
+          
+          this.overlays[this.currentIndex].classList.add('active');
+        }, speed);
+      }
+
+      disconnectedCallback() {
+        if (this.rotationInterval) {
+          clearInterval(this.rotationInterval);
+        }
+      }
+    }
+
+    customElements.define('hero-banner-{{ ai_gen_id }}', HeroBanner{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Rotating overlay hero",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image (desktop)"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image_mobile",
+      "label": "Background image (mobile)"
+    },
+    {
+      "type": "select",
+      "id": "background_height",
+      "label": "Background height",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "header",
+      "content": "Overlay images"
+    },
+    {
+      "type": "select",
+      "id": "overlay_position",
+      "label": "Overlay position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "overlay_width",
+      "min": 100,
+      "max": 600,
+      "step": 10,
+      "unit": "px",
+      "label": "Overlay width",
+      "default": 300
+    },
+    {
+      "type": "range",
+      "id": "overlay_height",
+      "min": 100,
+      "max": 600,
+      "step": 10,
+      "unit": "px",
+      "label": "Overlay height",
+      "default": 300
+    },
+    {
+      "type": "range",
+      "id": "overlay_padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "overlay_padding_left",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding left",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "overlay_padding_right",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding right",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "overlay_padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 0
+    },
+    {
+      "type": "image_picker",
+      "id": "overlay_image_1",
+      "label": "Overlay image 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "overlay_image_2",
+      "label": "Overlay image 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "overlay_image_3",
+      "label": "Overlay image 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "overlay_image_4",
+      "label": "Overlay image 4"
+    },
+    {
+      "type": "range",
+      "id": "rotation_speed",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "label": "Rotation speed",
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Welcome to our store"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 20,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 48
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Discover our latest collection"
+    },
+    {
+      "type": "range",
+      "id": "subheading_size",
+      "min": 12,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Subheading size",
+      "default": 18
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Button 1"
+    },
+    {
+      "type": "text",
+      "id": "button_1_text",
+      "label": "Button 1 text",
+      "default": "LEATHERS"
+    },
+    {
+      "type": "url",
+      "id": "button_1_link",
+      "label": "Button 1 link"
+    },
+    {
+      "type": "header",
+      "content": "Button 2"
+    },
+    {
+      "type": "text",
+      "id": "button_2_text",
+      "label": "Button 2 text",
+      "default": "KNITWEAR"
+    },
+    {
+      "type": "url",
+      "id": "button_2_link",
+      "label": "Button 2 link"
+    },
+    {
+      "type": "header",
+      "content": "Button style"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Background color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_border_color",
+      "label": "Border color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_bg_color",
+      "label": "Hover background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text_color",
+      "label": "Hover text color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_border_color",
+      "label": "Hover border color",
+      "default": "#000000"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Rotating overlay hero"
+    }
+  ]
+}
+{% endschema %}
